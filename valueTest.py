@@ -1,8 +1,9 @@
-import time
+import sys
 
-from repo.uptechStar import uptech
+sys.path.append("..")
+from uptech import UpTech
 
-up = uptech.UpTech()
+up = UpTech()
 
 up.LCD_Open(2)
 up.ADC_IO_Open()
@@ -54,6 +55,7 @@ def display(mode):
         up.LCD_PutString(0, 54, str_accel_z)
     up.LCD_Refresh()
 
+
 if __name__ == '__main__':
 
     while True:
@@ -77,7 +79,7 @@ if __name__ == '__main__':
 
         print("adc_value : ", end="")
 
-        for i in range(len(adc_value)-1):
+        for i in range(len(adc_value) - 1):
             print(f"({i}):", adc_value[i], end=" |")
         print("\n")
 
@@ -101,6 +103,3 @@ if __name__ == '__main__':
         #     count = 0
         # else:
         #     count += 1
-
-
-
