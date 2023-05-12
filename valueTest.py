@@ -1,7 +1,7 @@
 import sys
 import time
 
-from repo.uptechStar.uptech import UpTech
+from ..uptech import UpTech
 
 up = UpTech()
 
