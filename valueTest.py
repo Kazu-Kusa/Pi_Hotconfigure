@@ -10,7 +10,7 @@ up.ADC_IO_Open()
 up.ADC_Led_SetColor(0, 0x2F0000)
 up.ADC_Led_SetColor(1, 0x002F00)
 
-up.LCD_PutString(30, 0, 'InnoStarTest')
+up.LCD_PutString(30, 0, 'Kusa')
 up.LCD_Refresh()
 # up.LCD_SetFontSize(up.FONT_8X14)
 
@@ -31,9 +31,9 @@ def display(mode):
         up.LCD_PutString(0, 66, str_attitude_yaw)
     elif mode == 2:
         gyro = up.MPU6500_GetGyro()
-        str_gyro_1 = f"data 1 {gyro[0]:.2}"
-        str_gyro_2 = f"data 2 {gyro[1]:.2}"
-        str_gyro_3 = f"data 3 {gyro[2]:.2}"
+        str_gyro_1 = f"Gyro x {gyro[0]:.2}"
+        str_gyro_2 = f"Gyro y {gyro[1]:.2}"
+        str_gyro_3 = f"Gyro z {gyro[2]:.2}"
 
         up.LCD_PutString(0, 30, str_gyro_1)
         up.LCD_PutString(0, 48, str_gyro_2)
