@@ -1,5 +1,5 @@
 import time
-from repo.uptechStar.module.up_controller import UpController
+from ..up_controller import UpController
 
 
 def rotating_test():
