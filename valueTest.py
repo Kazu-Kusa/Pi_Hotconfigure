@@ -1,3 +1,4 @@
+import os
 import time
 
 from ..uptech import UpTech
@@ -48,6 +49,21 @@ def display(mode):
     screen.LCD_Refresh()
 
 
+def print_table(headers, rows, file, row_format="| {} |\n"):
+    # 计算每列的最大宽度
+    column_widths = [max(len(str(x)) for x in col) for col in zip(headers, *rows)]
+
+    # 打印表头
+    line = "+-{}-+".format("-+-".join("-" * width for width in column_widths))
+    print(line, file=file)
+    print(row_format.format(*headers), file=file)
+
+    # 打印每一行数据
+    for row in rows:
+        print(row_format.format(*(str(x).ljust(column_widths[i]) for i, x in enumerate(row))), file=file)
+    print(line, file=file)
+
+
 def read_sensors(mode: int = 1, interval: float = 1, adc_labels: dict = None, io_labels: dict = None):
     try:
         # 创建一个字符串缓冲区对象来保存输出内容
@@ -59,6 +75,7 @@ def read_sensors(mode: int = 1, interval: float = 1, adc_labels: dict = None, io
         while True:
 
             # 清空缓冲区
+
             output_buffer.truncate(0)
             output_buffer.seek(0)
 
@@ -75,7 +92,7 @@ def read_sensors(mode: int = 1, interval: float = 1, adc_labels: dict = None, io
             print("-" * 44, file=output_buffer)
 
             # 打印 IO 状态值表格
-            print("\nIO values:", file=output_buffer)
+            print("IO values:", file=output_buffer)
             print("-" * 33, file=output_buffer)
             for i in range(8):
                 label = io_labels.get(i, f"({i})") if io_labels else default_labels[i + 9]
@@ -84,8 +101,11 @@ def read_sensors(mode: int = 1, interval: float = 1, adc_labels: dict = None, io
             print("|", file=output_buffer)
             print("-" * 33, file=output_buffer)
 
+            # 使用ANSI转义序列清空当前行和移动到第一列
+
             # 打印缓冲区中的内容
-            print(output_buffer.getvalue())
+            os.system('clear')
+            print(output_buffer.getvalue(), end="")
 
             time.sleep(interval)
 
