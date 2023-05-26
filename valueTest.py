@@ -6,14 +6,17 @@ from ..screen import Screen
 from io import StringIO
 import string
 
-up = UpTech()
-screen = Screen()
+global up, screen
 
-up.ADC_IO_Open()
-up.ADC_Led_SetColor(0, 0x2F0000)
-up.ADC_Led_SetColor(1, 0x002F00)
 
-screen.LCD_PutString(30, 0, 'Kusa')
+def load(debug: bool = True):
+    global up, screen
+    up = UpTech(debug=debug, fan_control=False)
+    screen = Screen()
+    up.ADC_IO_Open()
+    up.ADC_Led_SetColor(0, 0x2F0000)
+    up.ADC_Led_SetColor(1, 0x002F00)
+    screen.LCD_PutString(0, 0, 'test load')
 
 
 def display(mode):
@@ -64,7 +67,9 @@ def print_table(headers, rows, file, row_format="| {} |\n"):
     print(line, file=file)
 
 
-def read_sensors(mode: int = 1, interval: float = 1, adc_labels: dict = None, io_labels: dict = None):
+def read_sensors(mode: int = 1, interval: float = 1, adc_labels: dict = None, io_labels: dict = None,
+                 console_sync: bool = False):
+    load()
     try:
         # 创建一个字符串缓冲区对象来保存输出内容
         output_buffer = StringIO()
@@ -104,12 +109,14 @@ def read_sensors(mode: int = 1, interval: float = 1, adc_labels: dict = None, io
             # 使用ANSI转义序列清空当前行和移动到第一列
 
             # 打印缓冲区中的内容
-            os.system('clear')
+            if console_sync:
+                os.system('clear')
             print(output_buffer.getvalue(), end="")
 
             time.sleep(interval)
 
     except KeyboardInterrupt:
+        screen.LCD_FillScreen(screen.COLOR_BLACK)
         screen.LCD_Refresh()
 
 
