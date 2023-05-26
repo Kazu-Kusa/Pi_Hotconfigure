@@ -58,8 +58,7 @@ def read_sensors(mode: int = 1, interval: float = 1):
             adc_value = up.ADC_Get_All_Channel()
 
             io_all_input = up.ADC_IO_GetAllInputLevel()
-            print(io_all_input)
-            breakpoint()
+
             io_array = '{:08b}'.format(io_all_input)
             io_data.clear()
 
