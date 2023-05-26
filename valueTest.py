@@ -1,8 +1,9 @@
-import sys
 import time
 
 from ..uptech import UpTech
 from ..screen import Screen
+from io import StringIO
+import string
 
 up = UpTech()
 screen = Screen()
@@ -12,11 +13,6 @@ up.ADC_Led_SetColor(0, 0x2F0000)
 up.ADC_Led_SetColor(1, 0x002F00)
 
 screen.LCD_PutString(30, 0, 'Kusa')
-
-# up.LCD_SetFontSize(up.FONT_8X14)
-
-
-io_data = []
 
 
 def display(mode):
@@ -52,35 +48,47 @@ def display(mode):
     screen.LCD_Refresh()
 
 
-def read_sensors(mode: int = 1, interval: float = 1):
+def read_sensors(mode: int = 1, interval: float = 1, adc_labels: dict = None, io_labels: dict = None):
     try:
+        # 创建一个字符串缓冲区对象来保存输出内容
+        output_buffer = StringIO()
+
+        # 字段标签的默认名称（只适用于单字符字段）
+        default_labels = dict(zip(range(17), string.ascii_uppercase))
+
         while True:
-            adc_value = up.ADC_Get_All_Channel()
 
-            io_all_input = up.ADC_IO_GetAllInputLevel()
-
-            io_array = '{:08b}'.format(io_all_input)
-            io_data.clear()
+            # 清空缓冲区
+            output_buffer.truncate(0)
+            output_buffer.seek(0)
 
             display(mode)
 
-            for index, value in enumerate(io_array):
-                io = int(value)
-                io_data.insert(0, io)
+            # 打印 ADC 通道值表格
+            print("ADC values:", file=output_buffer)
+            print("-" * 44, file=output_buffer)
+            for i in range(9):
+                label = adc_labels.get(i, f"({i})") if adc_labels else default_labels[i]
+                value = up.ADC_Get_All_Channel()[i]
+                print(f"| {label:>2}: {value:<4} ", end="", file=output_buffer)
+            print("|", file=output_buffer)
+            print("-" * 44, file=output_buffer)
 
-            print("adc_value : ", end="")
+            # 打印 IO 状态值表格
+            print("\nIO values:", file=output_buffer)
+            print("-" * 33, file=output_buffer)
+            for i in range(8):
+                label = io_labels.get(i, f"({i})") if io_labels else default_labels[i + 9]
+                value = up.ADC_IO_GetAllInputLevel()[i]
+                print(f"| {label:>2}: {value:<4} ", end="", file=output_buffer)
+            print("|", file=output_buffer)
+            print("-" * 33, file=output_buffer)
 
-            for i in range(len(adc_value) - 1):
-                print(f"({i}):", adc_value[i], end=" |")
-            print("\n")
-
-            print("io_value : ", end="")
-
-            for i in range(len(io_data)):
-                print(f"({i}):", io_data[i], end=" |")
-            print("\n")
+            # 打印缓冲区中的内容
+            print(output_buffer.getvalue())
 
             time.sleep(interval)
+
     except KeyboardInterrupt:
         screen.LCD_Refresh()
 
