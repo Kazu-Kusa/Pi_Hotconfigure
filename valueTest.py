@@ -2,6 +2,7 @@ import time
 
 from ..uptech import UpTech
 from ..screen import Screen
+from io import StringIO
 
 up = UpTech()
 screen = Screen()
@@ -48,20 +49,29 @@ def display(mode):
 
 def read_sensors(mode: int = 1, interval: float = 1):
     try:
+        # 创建一个字符串缓冲区对象来保存输出内容
+        output_buffer = StringIO()
         while True:
 
+            # 清空缓冲区
+            output_buffer.truncate(0)
+            output_buffer.seek(0)
+
             display(mode)
-            print("adc_value : ", end="")
+            print("adc_value : ", end="", file=output_buffer)
 
             for i in range(9):
-                print(f"({i}):", up.ADC_Get_All_Channel()[i], end=" |")
-            print("\n")
+                print(f"({i}):", up.ADC_Get_All_Channel()[i], end=" |", file=output_buffer)
+            print("\n", file=output_buffer)
 
-            print("io_value : ", end="")
+            print("io_value : ", end="", file=output_buffer)
 
             for i in range(8):
-                print(f"({i}):", up.ADC_IO_GetAllInputLevel(), end=" |")
-            print("\n")
+                print(f"({i}):", up.ADC_IO_GetAllInputLevel()[i], end=" |", file=output_buffer)
+            print("\n", file=output_buffer)
+
+            # 打印缓冲区中的内容
+            print(output_buffer.getvalue())
 
             time.sleep(interval)
     except KeyboardInterrupt:
