@@ -1,8 +1,8 @@
 import os
 import time
 
-from ..uptech import UpTech
-from ..screen import Screen
+from repo.uptechStar.module.uptech import UpTech
+from repo.uptechStar.module.screen import Screen
 from io import StringIO
 import string
 
