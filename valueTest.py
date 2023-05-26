@@ -1,4 +1,3 @@
-import sys
 import time
 
 from ..uptech import UpTech
@@ -12,11 +11,6 @@ up.ADC_Led_SetColor(0, 0x2F0000)
 up.ADC_Led_SetColor(1, 0x002F00)
 
 screen.LCD_PutString(30, 0, 'Kusa')
-
-# up.LCD_SetFontSize(up.FONT_8X14)
-
-
-io_data = []
 
 
 def display(mode):
@@ -55,29 +49,18 @@ def display(mode):
 def read_sensors(mode: int = 1, interval: float = 1):
     try:
         while True:
-            adc_value = up.ADC_Get_All_Channel()
-
-            io_all_input = up.ADC_IO_GetAllInputLevel()
-
-            io_array = '{:08b}'.format(io_all_input)
-            io_data.clear()
 
             display(mode)
-
-            for index, value in enumerate(io_array):
-                io = int(value)
-                io_data.insert(0, io)
-
             print("adc_value : ", end="")
 
-            for i in range(len(adc_value) - 1):
-                print(f"({i}):", adc_value[i], end=" |")
+            for i in range(9):
+                print(f"({i}):", up.ADC_Get_All_Channel()[i], end=" |")
             print("\n")
 
             print("io_value : ", end="")
 
-            for i in range(len(io_data)):
-                print(f"({i}):", io_data[i], end=" |")
+            for i in range(8):
+                print(f"({i}):", up.ADC_IO_GetAllInputLevel(), end=" |")
             print("\n")
 
             time.sleep(interval)
