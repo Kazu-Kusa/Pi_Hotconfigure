@@ -42,9 +42,9 @@ def display(mode):
     elif mode == 3:
         accel = up.MPU6500_GetAccel()
 
-        str_accel_x = f"x :{accel[0]:.2}"
-        str_accel_y = f"y :{accel[1]:.2}"
-        str_accel_z = f"z :{accel[2]:.2}"
+        str_accel_x = f"x_acc :{accel[0]:.2}"
+        str_accel_y = f"y_acc :{accel[1]:.2}"
+        str_accel_z = f"z_acc :{accel[2]:.2}"
 
         screen.LCD_PutString(0, 30, str_accel_x)
         screen.LCD_PutString(0, 44, str_accel_y)
@@ -53,6 +53,14 @@ def display(mode):
 
 
 def print_table(headers, rows, file, row_format="| {} |\n"):
+    """
+     not function
+    :param headers:
+    :param rows:
+    :param file:
+    :param row_format:
+    :return:
+    """
     # 计算每列的最大宽度
     column_widths = [max(len(str(x)) for x in col) for col in zip(headers, *rows)]
 
