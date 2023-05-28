@@ -126,7 +126,3 @@ def read_sensors(mode: int = 1, interval: float = 1, adc_labels: dict = None, io
     except KeyboardInterrupt:
         screen.LCD_FillScreen(screen.COLOR_BLACK)
         screen.LCD_Refresh()
-
-
-if __name__ == '__main__':
-    read_sensors()
