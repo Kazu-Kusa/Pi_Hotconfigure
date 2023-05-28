@@ -14,8 +14,8 @@ def load(debug: bool = True):
     up = UpTech(debug=debug, fan_control=False)
     screen = Screen()
     up.ADC_IO_Open()
-    up.ADC_Led_SetColor(0, 0x2F0000)
-    up.ADC_Led_SetColor(1, 0x002F00)
+    screen.ADC_Led_SetColor(0, screen.COLOR_BROWN)
+    screen.ADC_Led_SetColor(1, screen.COLOR_GRED)
     screen.LCD_PutString(0, 0, 'test load')
 
 
