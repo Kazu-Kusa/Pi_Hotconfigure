@@ -21,7 +21,7 @@ def load(debug: bool = True):
 
 def display(mode):
     if mode == 1:
-        attitude = up.atti_all()
+        attitude = up.atti_all
         str_attitude_pitch = 'Pitch:%.2f  ' % attitude[0]
         str_attitude_roll = 'Roll :%.2f  ' % attitude[1]
         str_attitude_yaw = 'Yaw  :%.2f  ' % attitude[2]
@@ -30,7 +30,7 @@ def display(mode):
         screen.LCD_PutString(0, 48, str_attitude_roll)
         screen.LCD_PutString(0, 66, str_attitude_yaw)
     elif mode == 2:
-        gyro = up.gyro_all()
+        gyro = up.gyro_all
         str_gyro_1 = f"Gyro x {gyro[0]:.2}"
         str_gyro_2 = f"Gyro y {gyro[1]:.2}"
         str_gyro_3 = f"Gyro z {gyro[2]:.2}"
@@ -40,7 +40,7 @@ def display(mode):
         screen.LCD_PutString(0, 66, str_gyro_3)
 
     elif mode == 3:
-        accel = up.acc_all()
+        accel = up.acc_all
 
         str_accel_x = f"x_acc :{accel[0]:.2}"
         str_accel_y = f"y_acc :{accel[1]:.2}"
@@ -99,7 +99,7 @@ def read_sensors(mode: int = 1, interval: float = 1, adc_labels: dict = None, io
             print("-" * 44, file=output_buffer)
             for i in range(9):
                 label = adc_labels.get(i, f"({i})") if adc_labels else default_labels[i]
-                value = up.adc_all_channels()[i]
+                value = up.adc_all_channels[i]
                 print(f"| {label:>2}: {value:<4} ", end="", file=output_buffer)
             print("|", file=output_buffer)
             print("-" * 44, file=output_buffer)
@@ -109,7 +109,7 @@ def read_sensors(mode: int = 1, interval: float = 1, adc_labels: dict = None, io
             print("-" * 33, file=output_buffer)
             for i in range(8):
                 label = io_labels.get(i, f"({i})") if io_labels else default_labels[i + 9]
-                value = up.io_all_channels()[i]
+                value = up.io_all_channels[i]
                 print(f"| {label:>2}: {value:<4} ", end="", file=output_buffer)
             print("|", file=output_buffer)
             print("-" * 33, file=output_buffer)
