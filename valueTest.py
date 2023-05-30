@@ -99,7 +99,7 @@ def read_sensors(mode: int = 1, interval: float = 1, adc_labels: dict = None, io
             print("-" * 44, file=output_buffer)
             for i in range(9):
                 label = adc_labels.get(i, f"({i})") if adc_labels else default_labels[i]
-                value = up.ADC_Get_All_Channel()[i]
+                value = up.adc_all_channels()[i]
                 print(f"| {label:>2}: {value:<4} ", end="", file=output_buffer)
             print("|", file=output_buffer)
             print("-" * 44, file=output_buffer)
@@ -109,7 +109,7 @@ def read_sensors(mode: int = 1, interval: float = 1, adc_labels: dict = None, io
             print("-" * 33, file=output_buffer)
             for i in range(8):
                 label = io_labels.get(i, f"({i})") if io_labels else default_labels[i + 9]
-                value = up.ADC_IO_GetAllInputLevel()[i]
+                value = up.io_all_channels()[i]
                 print(f"| {label:>2}: {value:<4} ", end="", file=output_buffer)
             print("|", file=output_buffer)
             print("-" * 33, file=output_buffer)
