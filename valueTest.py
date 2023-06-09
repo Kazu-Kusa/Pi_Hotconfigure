@@ -16,7 +16,7 @@ def load(debug: bool = True):
     up.ADC_IO_Open()
     screen.ADC_Led_SetColor(0, screen.COLOR_BROWN)
     screen.ADC_Led_SetColor(1, screen.COLOR_GRED)
-    screen.LCD_PutString(0, 0, 'test load')
+    # screen.LCD_PutString(0, 0, 'test load')
 
 
 def display(mode):
@@ -75,7 +75,7 @@ def print_table(headers, rows, file, row_format="| {} |\n"):
     print(line, file=file)
 
 
-def read_sensors(mode: int = 1, interval: float = 1, adc_labels: dict = None, io_labels: dict = None,
+def read_sensors(interval: float = 1, adc_labels: dict = None, io_labels: dict = None,
                  console_sync: bool = False):
     load()
     try:
@@ -92,15 +92,21 @@ def read_sensors(mode: int = 1, interval: float = 1, adc_labels: dict = None, io
             output_buffer.truncate(0)
             output_buffer.seek(0)
 
-            display(mode)
-
             # 打印 ADC 通道值表格
             print("ADC values:", file=output_buffer)
+
             print("-" * 44, file=output_buffer)
+            screen.LCD_SetFontSize(screen.FONT_6X8)
+            screen.LCD_FillScreen(screen.COLOR_BLACK)
+            screen.LCD_Refresh()
             for i in range(9):
                 label = adc_labels.get(i, f"({i})") if adc_labels else default_labels[i]
                 value = up.adc_all_channels[i]
+
+                screen.LCD_PutString(0, i * 8, f'{label}:{value}')
+
                 print(f"| {label:>2}: {value:<4} ", end="", file=output_buffer)
+            screen.LCD_Refresh()
             print("|", file=output_buffer)
             print("-" * 44, file=output_buffer)
 
