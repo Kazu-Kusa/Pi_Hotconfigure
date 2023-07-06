@@ -15,8 +15,8 @@ def count_adds_per_second(display_on_screen: bool = True):
     while True:
         cnt += 1
         if time.time() - start_time >= 1.0:
+            d = cnt - prev_cnt
             if display_on_screen:
-                d = cnt - prev_cnt
                 if d > 0 and prev_cnt != 0:
                     string = f' rise|{int(d * 100 / prev_cnt)}%'
                 elif prev_cnt != 0:
