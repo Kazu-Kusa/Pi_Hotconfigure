@@ -3,6 +3,11 @@ from ..screen import Screen
 
 
 def count_adds_per_second(display_on_screen: bool = True):
+    """
+    use to check the ticks per second
+    :param display_on_screen:
+    :return:
+    """
     if display_on_screen:
         screen = Screen()
         screen.LCD_SetFontSize(screen.FONT_5X12)
