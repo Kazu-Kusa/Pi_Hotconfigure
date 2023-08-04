@@ -14,9 +14,9 @@ def load(debug: bool = True):
     up = UpTech(debug=debug, fan_control=False)
     screen = Screen()
     up.adc_io_open()
-    screen.ADC_Led_SetColor(0, screen.COLOR_BROWN)
-    screen.ADC_Led_SetColor(1, screen.COLOR_GRED)
-    # screen.LCD_PutString(0, 0, 'test load')
+    screen.set_led_color(0, screen.COLOR_BROWN)
+    screen.set_led_color(1, screen.COLOR_GRED)
+    # screen.put_string(0, 0, 'test load')
 
 
 def display(mode):
@@ -26,18 +26,18 @@ def display(mode):
         str_attitude_roll = 'Roll :%.2f  ' % attitude[1]
         str_attitude_yaw = 'Yaw  :%.2f  ' % attitude[2]
 
-        screen.LCD_PutString(0, 30, str_attitude_pitch)
-        screen.LCD_PutString(0, 48, str_attitude_roll)
-        screen.LCD_PutString(0, 66, str_attitude_yaw)
+        screen.put_string(0, 30, str_attitude_pitch)
+        screen.put_string(0, 48, str_attitude_roll)
+        screen.put_string(0, 66, str_attitude_yaw)
     elif mode == 2:
         gyro = up.gyro_all
         str_gyro_1 = f"Gyro x {gyro[0]:.2}"
         str_gyro_2 = f"Gyro y {gyro[1]:.2}"
         str_gyro_3 = f"Gyro z {gyro[2]:.2}"
 
-        screen.LCD_PutString(0, 30, str_gyro_1)
-        screen.LCD_PutString(0, 48, str_gyro_2)
-        screen.LCD_PutString(0, 66, str_gyro_3)
+        screen.put_string(0, 30, str_gyro_1)
+        screen.put_string(0, 48, str_gyro_2)
+        screen.put_string(0, 66, str_gyro_3)
 
     elif mode == 3:
         accel = up.acc_all
@@ -46,10 +46,10 @@ def display(mode):
         str_accel_y = f"y_acc :{accel[1]:.2}"
         str_accel_z = f"z_acc :{accel[2]:.2}"
 
-        screen.LCD_PutString(0, 30, str_accel_x)
-        screen.LCD_PutString(0, 44, str_accel_y)
-        screen.LCD_PutString(0, 54, str_accel_z)
-    screen.LCD_Refresh()
+        screen.put_string(0, 30, str_accel_x)
+        screen.put_string(0, 44, str_accel_y)
+        screen.put_string(0, 54, str_accel_z)
+    screen.refresh()
 
 
 def print_table(headers, rows, file, row_format="| {} |\n"):
@@ -96,17 +96,17 @@ def read_sensors(interval: float = 1, adc_labels: dict = None, io_labels: dict =
             print("ADC values:", file=output_buffer)
 
             print("-" * 44, file=output_buffer)
-            screen.LCD_SetFontSize(screen.FONT_6X8)
-            screen.LCD_FillScreen(screen.COLOR_BLACK)
-            screen.LCD_Refresh()
+            screen.set_font_size(screen.FONT_6X8)
+            screen.fill_screen(screen.COLOR_BLACK)
+            screen.refresh()
             for i in range(9):
                 label = adc_labels.get(i, f"({i})") if adc_labels else default_labels[i]
                 value = up.adc_all_channels[i]
 
-                screen.LCD_PutString(0, i * 8, f'{label}:{value}')
+                screen.put_string(0, i * 8, f'{label}:{value}')
 
                 print(f"| {label:>2}: {value:<4} ", end="", file=output_buffer)
-            screen.LCD_Refresh()
+            screen.refresh()
             print("|", file=output_buffer)
             print("-" * 44, file=output_buffer)
 
@@ -130,5 +130,5 @@ def read_sensors(interval: float = 1, adc_labels: dict = None, io_labels: dict =
             time.sleep(interval)
 
     except KeyboardInterrupt:
-        screen.LCD_FillScreen(screen.COLOR_BLACK)
-        screen.LCD_Refresh()
+        screen.fill_screen(screen.COLOR_BLACK)
+        screen.refresh()
