@@ -1,17 +1,17 @@
 import os
-import time
-
-from ..uptech import UpTech
-from ..screen import Screen
-from io import StringIO
 import string
+import time
+from io import StringIO
+
+from ..screen import Screen
+from ..uptech import UpTech
 
 global up, screen
 
 
 def load(debug: bool = True):
     global up, screen
-    up = UpTech(debug=debug, fan_control=False)
+    up = UpTech(debug=debug)
     screen = Screen()
     up.adc_io_open()
     screen.set_led_color(0, screen.COLOR_BROWN)
@@ -101,7 +101,7 @@ def read_sensors(interval: float = 1, adc_labels: dict = None, io_labels: dict =
             screen.refresh()
             for i in range(9):
                 label = adc_labels.get(i, f"({i})") if adc_labels else default_labels[i]
-                value = up.adc_all_channels[i]
+                value = up.adc_all_channels()[i]
 
                 screen.put_string(0, i * 8, f'{label}:{value}')
 
@@ -115,7 +115,7 @@ def read_sensors(interval: float = 1, adc_labels: dict = None, io_labels: dict =
             print("-" * 33, file=output_buffer)
             for i in range(8):
                 label = io_labels.get(i, f"({i})") if io_labels else default_labels[i + 9]
-                value = up.io_all_channels[i]
+                value = up.io_all_channels()[i]
                 print(f"| {label:>2}: {value:<4} ", end="", file=output_buffer)
             print("|", file=output_buffer)
             print("-" * 33, file=output_buffer)
