@@ -3,15 +3,15 @@ import string
 import time
 from io import StringIO
 
+from ..onboardsensors import OnBoardSensors
 from ..screen import Screen
-from ..uptech import UpTech
 
 global up, screen
 
 
 def load(debug: bool = True):
     global up, screen
-    up = UpTech(debug=debug)
+    up = OnBoardSensors(debug=debug)
     screen = Screen()
     up.adc_io_open()
     screen.set_led_color(0, screen.COLOR_BROWN)
